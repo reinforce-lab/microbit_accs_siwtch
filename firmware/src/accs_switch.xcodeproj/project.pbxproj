@@ -6,10 +6,71 @@
 	objectVersion = 48;
 	objects = {
 
+/* Begin PBXFileReference section */
+		F827D5892069D500002C6319 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		F827D58A2069D613002C6319 /* util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		F827D58B2069D6C7002C6319 /* sdk_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sdk_config.h; path = config/sdk_config.h; sourceTree = "<group>"; };
+		F827D58C2069D6D8002C6319 /* app_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_config.h; sourceTree = "<group>"; };
+		F827D58D2069D704002C6319 /* io_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = io_definition.h; sourceTree = "<group>"; };
+		F827D58E2069E3DE002C6319 /* app_gap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = app_gap.c; sourceTree = "<group>"; };
+		F827D58F2069E3DE002C6319 /* app_gap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_gap.h; sourceTree = "<group>"; };
+		F827D5902069E40C002C6319 /* battery_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = battery_service.c; sourceTree = "<group>"; };
+		F827D5912069E40C002C6319 /* battery_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = battery_service.h; sourceTree = "<group>"; };
+		F827D5922069E41B002C6319 /* ble_stack.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_stack.c; sourceTree = "<group>"; };
+		F827D5932069E41B002C6319 /* ble_stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_stack.h; sourceTree = "<group>"; };
+		F827D5942069E42C002C6319 /* twi_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_manager.c; sourceTree = "<group>"; };
+		F827D5952069E42C002C6319 /* twi_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_manager.h; sourceTree = "<group>"; };
+		F827D596206A007E002C6319 /* twi_slave_lis3dh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_lis3dh.c; sourceTree = "<group>"; };
+		F827D597206A007E002C6319 /* twi_slave_lis3dh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_lis3dh.h; sourceTree = "<group>"; };
+		F827D598206A00B4002C6319 /* advertising_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = advertising_manager.c; sourceTree = "<group>"; };
+		F827D599206A00B4002C6319 /* advertising_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = advertising_manager.h; sourceTree = "<group>"; };
+		F827D59A206A00D4002C6319 /* sensor_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_service.c; sourceTree = "<group>"; };
+		F827D59B206A00D4002C6319 /* sensor_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_service.h; sourceTree = "<group>"; };
+		F827D59C206A00ED002C6319 /* device_information_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = device_information_service.c; sourceTree = "<group>"; };
+		F827D59D206A00ED002C6319 /* device_information_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_information_service.h; sourceTree = "<group>"; };
+		F827D59E206A0405002C6319 /* ble_parameter_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameter_config.h; sourceTree = "<group>"; };
+		F827D59F206A055D002C6319 /* device_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_definition.h; sourceTree = "<group>"; };
+		F827D5A0206A108E002C6319 /* value_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = value_type.h; sourceTree = "<group>"; };
+		F827D5A1206A10C4002C6319 /* sensor_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_manager.c; sourceTree = "<group>"; };
+		F827D5A2206A10C4002C6319 /* sensor_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_manager.h; sourceTree = "<group>"; };
+		F827D5A6206A2C82002C6319 /* app_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = app_manager.c; sourceTree = "<group>"; };
+		F827D5A7206A2C82002C6319 /* app_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_manager.h; sourceTree = "<group>"; };
+		F827D5A8206A2E75002C6319 /* app_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_definition.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		F827D5822069D137002C6319 = {
 			isa = PBXGroup;
 			children = (
+				F827D5A7206A2C82002C6319 /* app_manager.h */,
+				F827D5A6206A2C82002C6319 /* app_manager.c */,
+				F827D5A0206A108E002C6319 /* value_type.h */,
+				F827D59F206A055D002C6319 /* device_definition.h */,
+				F827D59E206A0405002C6319 /* ble_parameter_config.h */,
+				F827D58D2069D704002C6319 /* io_definition.h */,
+				F827D5A8206A2E75002C6319 /* app_definition.h */,
+				F827D58B2069D6C7002C6319 /* sdk_config.h */,
+				F827D58C2069D6D8002C6319 /* app_config.h */,
+				F827D58A2069D613002C6319 /* util.h */,
+				F827D5892069D500002C6319 /* main.c */,
+				F827D5932069E41B002C6319 /* ble_stack.h */,
+				F827D5922069E41B002C6319 /* ble_stack.c */,
+				F827D599206A00B4002C6319 /* advertising_manager.h */,
+				F827D598206A00B4002C6319 /* advertising_manager.c */,
+				F827D58F2069E3DE002C6319 /* app_gap.h */,
+				F827D58E2069E3DE002C6319 /* app_gap.c */,
+				F827D59D206A00ED002C6319 /* device_information_service.h */,
+				F827D59C206A00ED002C6319 /* device_information_service.c */,
+				F827D5912069E40C002C6319 /* battery_service.h */,
+				F827D5902069E40C002C6319 /* battery_service.c */,
+				F827D5952069E42C002C6319 /* twi_manager.h */,
+				F827D5942069E42C002C6319 /* twi_manager.c */,
+				F827D597206A007E002C6319 /* twi_slave_lis3dh.h */,
+				F827D596206A007E002C6319 /* twi_slave_lis3dh.c */,
+				F827D59B206A00D4002C6319 /* sensor_service.h */,
+				F827D59A206A00D4002C6319 /* sensor_service.c */,
+				F827D5A2206A10C4002C6319 /* sensor_manager.h */,
+				F827D5A1206A10C4002C6319 /* sensor_manager.c */,
 			);
 			sourceTree = "<group>";
 		};
