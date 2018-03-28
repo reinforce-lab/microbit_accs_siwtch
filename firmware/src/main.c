@@ -31,8 +31,11 @@
 #include "ble_parameter_config.h"
 #include "app_definition.h"
 #include "twi_manager.h"
+#include "app_manager.h"
+#include "sensor_service.h"
 
 static ble_uuid_t m_advertisiong_uuid;
+static sensor_service_t sensor_service_context;
 
 // 関数宣言
 static void printBLEEvent(ble_evt_t * p_ble_evt);
@@ -80,7 +83,7 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     
     handle_battery_service_ble_event(p_ble_evt);
     
-//    senstickControlService_handleBLEEvent(p_ble_evt);
+    sensorService_handleBLEEvent(&sensor_service_context, p_ble_evt);
     
     printBLEEvent(p_ble_evt);
     
@@ -232,17 +235,18 @@ int main(void)
     
     // 初期設定
     init_app_gap();
-//    init_device_manager(true); //    void init_device_manager(bool erase_bonds);
     
-    m_advertisiong_uuid.uuid = 0x2000;
+    // SENSOR_SERVICE_UUID  をアドバタイジングする。
+    m_advertisiong_uuid.uuid = 0x2100;
     m_advertisiong_uuid.type = uuid_type;
     init_advertising_manager(&m_advertisiong_uuid);
     
     // BLEサービス
     init_device_information_service();
     init_battery_service();
+    initSensorService(&sensor_service_context, uuid_type);
     
-//    initSenstickControlService(uuid_type);
+    initAppManager();
     
     // アドバタイジングを開始する。
     startAdvertising();

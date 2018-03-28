@@ -18,6 +18,7 @@
 #include "twi_slave_lis3dh.h"
 
 #include "util.h"
+#include "value_type.h"
 #include "io_definition.h"
 
 // レジスタ仕様書
@@ -178,11 +179,6 @@ void setLIS3DHRange(AccelerationRange_t range)
 //
 //    uint8_t data[] = {value};
 //    writeToLIS3DH( ACCEL_CONFIG, data, sizeof(data));
-}
-
-static int16_t readInt16AsLittleEndian(uint8_t *ptr)
-{
-    return ((int16_t)ptr[0] | (int16_t)ptr[1] << 8);
 }
 
 void getAccelerationData(AccelerationData_t *p_acceleration)

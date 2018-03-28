@@ -14,6 +14,8 @@
 // IO設定を読み込む。
 #include "io_definition.h"
 
+#define HARDFAULT_HANDLER_ENABLED 1
+
 #define CRC32_ENABLED       1
 #define FSTORAGE_ENABLED    1
 #define NRF_QUEUE_ENABLED   1
@@ -51,7 +53,7 @@
 // ===
 // ログ
 #define NRF_LOG_ENABLED  1
-#define NRF_LOG_DEFERRED 0
+#define NRF_LOG_DEFERRED 1
 #define NRF_LOG_BACKEND_SERIAL_USES_UART 0
 #define NRF_LOG_BACKEND_SERIAL_USES_RTT  1
 // <0=> Off

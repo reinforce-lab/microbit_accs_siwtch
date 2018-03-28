@@ -31,20 +31,20 @@
 		F827D59E206A0405002C6319 /* ble_parameter_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameter_config.h; sourceTree = "<group>"; };
 		F827D59F206A055D002C6319 /* device_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_definition.h; sourceTree = "<group>"; };
 		F827D5A0206A108E002C6319 /* value_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = value_type.h; sourceTree = "<group>"; };
-		F827D5A1206A10C4002C6319 /* sensor_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_manager.c; sourceTree = "<group>"; };
-		F827D5A2206A10C4002C6319 /* sensor_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_manager.h; sourceTree = "<group>"; };
 		F827D5A6206A2C82002C6319 /* app_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = app_manager.c; sourceTree = "<group>"; };
 		F827D5A7206A2C82002C6319 /* app_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_manager.h; sourceTree = "<group>"; };
 		F827D5A8206A2E75002C6319 /* app_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_definition.h; sourceTree = "<group>"; };
+		F827D5A9206B1435002C6319 /* value_type.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = value_type.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		F827D5822069D137002C6319 = {
 			isa = PBXGroup;
 			children = (
+				F827D5A0206A108E002C6319 /* value_type.h */,
+				F827D5A9206B1435002C6319 /* value_type.c */,
 				F827D5A7206A2C82002C6319 /* app_manager.h */,
 				F827D5A6206A2C82002C6319 /* app_manager.c */,
-				F827D5A0206A108E002C6319 /* value_type.h */,
 				F827D59F206A055D002C6319 /* device_definition.h */,
 				F827D59E206A0405002C6319 /* ble_parameter_config.h */,
 				F827D58D2069D704002C6319 /* io_definition.h */,
@@ -69,8 +69,6 @@
 				F827D596206A007E002C6319 /* twi_slave_lis3dh.c */,
 				F827D59B206A00D4002C6319 /* sensor_service.h */,
 				F827D59A206A00D4002C6319 /* sensor_service.c */,
-				F827D5A2206A10C4002C6319 /* sensor_manager.h */,
-				F827D5A1206A10C4002C6319 /* sensor_manager.c */,
 			);
 			sourceTree = "<group>";
 		};

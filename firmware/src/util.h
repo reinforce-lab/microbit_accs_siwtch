@@ -8,6 +8,16 @@
 #ifndef util_h
 #define util_h
 
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
+
+#include <ble.h>
+#include <ble_srv_common.h>
+#include <nrf_assert.h>
+#include <sdk_errors.h>
+#include <app_error.h>
+
 #include <sdk_config.h>
 #include <nrf_log.h>
 
