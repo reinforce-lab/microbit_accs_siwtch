@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'nrf51822_xxaa_s130v2_sdk12' 
- * Target:  'nrf51822_xxaa' 
+ * Project: 'nrf51822_xxac_s130v2_sdk12' 
+ * Target:  'nrf51822_xxac' 
  */
 
 #ifndef RTE_COMPONENTS_H

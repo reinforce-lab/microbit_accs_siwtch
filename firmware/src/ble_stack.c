@@ -30,16 +30,18 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
     ret_code_t err_code;
     
     // Initialize the SoftDevice handler module.
+    // ハードウェア構成により、クロック設定は異なってくる。使用するモジュールは、32MHzクロック。32kHzクロックはなし。
+    NRF_CLOCK->XTALFREQ = (uint32_t)((CLOCK_XTALFREQ_XTALFREQ_32MHz << CLOCK_XTALFREQ_XTALFREQ_Pos) & CLOCK_XTALFREQ_XTALFREQ_Msk);
+
     // LFCLK crystal oscillator. 32kHz Xtalなし。内部RC発振回路を使用。
     nrf_clock_lf_cfg_t clock_lf_cfg = {
         .source        = NRF_CLOCK_LF_SRC_RC, //NRF_CLOCK_LF_SRC_XTAL,
         // Calibration timer interval in 1/4 second units (nRF51: 1-64, nRF52: 1-32).
         // この時間間隔は、最大でも0.5度程度の温度変化が起きる程度。
-        .rc_ctiv       = 32,
+        .rc_ctiv       = 16,
         .rc_temp_ctiv  = 0,
         .xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_20_PPM // RCでは、このフィールドは無視される。
     };
-    
     SOFTDEVICE_HANDLER_APPSH_INIT(&clock_lf_cfg, true);      // BLEのスタックの処理は、スケジューラを使う。
     
     ble_enable_params_t ble_enable_params;
