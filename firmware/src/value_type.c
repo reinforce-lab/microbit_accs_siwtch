@@ -21,7 +21,7 @@ void int16ToByteArrayLittleEndian(uint8_t *p_dst, int16_t src)
 static uint8_t getChecksumOfSensorThreshold(const SensorThreshold *p_data)
 {
     int sum = p_data->highThreshold + p_data->lowThreshold;
-    uint8_t checksum = (uint8_t)(sum & 0x0f);
+    uint8_t checksum = (uint8_t)(sum & 0x0ff);
     
     return checksum;
 }

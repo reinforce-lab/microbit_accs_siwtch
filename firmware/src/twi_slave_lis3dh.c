@@ -131,10 +131,10 @@ bool initLIS3DH(void)
     // D0       Xen
     //
     // Data rate 100Hz, 0101
-    // Low-power mode, 1
+    // Low-power mode,  0
     // Z,Y,X enabled    111
-    // 0101_1111 = 0x5f
-    const uint8_t ctrl_reg1_data[] = {0x5f};
+    // 0101_0111 = 0x57
+    const uint8_t ctrl_reg1_data[] = {0x57};
     writeToLIS3DH(CTRL_REG1, ctrl_reg1_data, sizeof(ctrl_reg1_data));
     
     // CTRL_REG4
@@ -146,9 +146,11 @@ bool initLIS3DH(void)
     // D[2:1]   ST[1:0]     Self-test enabled. default value: 00.
     // D0:  SIM SPI serial interface mode selection. default value: 0.
     //
-    // range: +-8g
-    // 0010_0000 = 0x20
-    const uint8_t ctrl_reg4_data[] = {0x20};
+    // BDU    1
+    // range: +-16g
+    // High-resolution 0
+    // 1011_0000 = 0xb0
+    const uint8_t ctrl_reg4_data[] = {0xb0};
     writeToLIS3DH(CTRL_REG4, ctrl_reg4_data, sizeof(ctrl_reg4_data));
     
     return true;
@@ -181,18 +183,48 @@ void setLIS3DHRange(AccelerationRange_t range)
 //    writeToLIS3DH( ACCEL_CONFIG, data, sizeof(data));
 }
 
+int16_t readAs10bitValue(uint8_t msb, uint8_t lsb)
+{
+    return  ((int16_t)msb << 8) | (int16_t)lsb;
+}
+
 void getAccelerationData(AccelerationData_t *p_acceleration)
 {
-    // 加速度のデータは一連の連続するアドレスから読み出す。
-//    OUT_X_L         = 0x28,
-//    OUT_X_H         = 0x29,
-//    OUT_Y_L         = 0x2A,
-//    OUT_Y_H         = 0x2B,
-//    OUT_Z_L         = 0x2C,
-//    OUT_Z_H         = 0x2D,
-    uint8_t buffer[6];
-    readFromLIS3DH(OUT_X_L, buffer, sizeof(buffer));
-    p_acceleration->x = readInt16AsLittleEndian(&(buffer[0]));
-    p_acceleration->y = readInt16AsLittleEndian(&(buffer[2]));
-    p_acceleration->z = readInt16AsLittleEndian(&(buffer[4]));
+    memset(p_acceleration, 0, sizeof(AccelerationData_t));
+
+    // マルチバイト読み出しをすると、同じレジスタの値が並ぶ。LIS3DHのI2Cは、内部でのアドレスインクリメントが機能していない?
+    
+    uint8_t msb, lsb;
+
+    readFromLIS3DH(OUT_X_H, &msb, 1);
+    readFromLIS3DH(OUT_X_L, &lsb, 1);
+    p_acceleration->x = readAs10bitValue(msb, lsb);
+    
+    readFromLIS3DH(OUT_Y_H, &msb, 1);
+    readFromLIS3DH(OUT_Y_L, &lsb, 1);
+    p_acceleration->y = readAs10bitValue(msb, lsb);
+    
+    readFromLIS3DH(OUT_Z_H, &msb, 1);
+    readFromLIS3DH(OUT_Z_L, &lsb, 1);
+    p_acceleration->z = readAs10bitValue(msb, lsb);
+
+
+    // これだと読めない。
+//    uint8_t buf[2];
+//    readFromLIS3DH(OUT_X_L, buf, 2);
+//    p_acceleration->x = readAs10bitValue(buf[1], buf[0]);
+    
+//    readFromLIS3DH(OUT_Y_H, &data, 1);
+//    p_acceleration->y = data;
+//    readFromLIS3DH(OUT_Z_H, &data, 1);
+//    p_acceleration->z = data;
+
+#ifdef DEBUG
+    static int count = 0;
+    count++;
+    if(count > 25) {
+        NRF_LOG_PRINTF_DEBUG("%d, %d, %d.\n", p_acceleration->x, p_acceleration->y, p_acceleration->z);
+        count = 0;
+    }
+#endif
 }

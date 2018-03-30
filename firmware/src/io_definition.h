@@ -11,12 +11,15 @@
 // 配線(役割)
 // IO     In/Out    概要
 // P0.0x    In      電源電圧。
-#define ADC_INPUT_SUPPLY_MONITORING NRF_ADC_CONFIG_INPUT_0 // AIN_0 ~ 7
+#define ADC_INPUT_SUPPLY_MONITORING NRF_ADC_CONFIG_INPUT_4 // AIN_0 ~ 7
 // TWI
 // P0.6            SDA
 // P0.4            SCL
 #define PIN_NUMBER_TWI_SDA   6
 #define PIN_NUMBER_TWI_SCL   4
+
+#define PIN_HIGH_THRESHOLD  2
+#define PIN_LOW_THRESHOLD   0
 
 // IOポートのアドレス定義
 // I2Cバス上の、スレーブ・アドレス

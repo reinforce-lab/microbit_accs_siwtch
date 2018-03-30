@@ -1,0 +1,15 @@
+加速度データは、low-power mode、8ビット、フルレンジ 8G。
+なので、1LSB=64mg/digit。
+
+閾値のシリアライゼーション。
+HIGH閾値(16ビット整数、下位バイトが先頭に来るリトルエンディアン)、
+LOW閾値(上と同じ)、
+チェックサム。
+
+チェックサムの計算は、16ビット整数のHIGH閾値とLOW閾値との合計値の下位1バイト。
+int sum = p_data->highThreshold + p_data->lowThreshold;
+    uint8_t checksum = (uint8_t)(sum & 0x0ff);
+
+センサデータ。
+加速度X, Y, Z。16ビット整数、リトルエンディアン。
+HIGH閾値のポート出力、LOW閾値のポート出力、1バイト、0/1。

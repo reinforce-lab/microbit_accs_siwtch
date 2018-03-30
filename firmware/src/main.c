@@ -35,7 +35,7 @@
 #include "sensor_service.h"
 
 static ble_uuid_t m_advertisiong_uuid;
-static sensor_service_t sensor_service_context;
+sensor_service_t sensor_service_context;
 
 // 関数宣言
 static void printBLEEvent(ble_evt_t * p_ble_evt);
@@ -246,6 +246,7 @@ int main(void)
     init_battery_service();
     initSensorService(&sensor_service_context, uuid_type);
     
+    // AppManagerの初期化は、BLEサービスの初期化の後で行うこと。このハンドラは内部でTWIデバイスを初期化する。
     initAppManager();
     
     // アドバタイジングを開始する。

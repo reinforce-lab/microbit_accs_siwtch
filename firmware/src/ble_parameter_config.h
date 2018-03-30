@@ -23,11 +23,11 @@
 #define ADV_SLOW_TIMEOUT_SEC            (600)
 
 // コネクション・インターバル
-// min:60ミリ秒 max:240ミリ秒
+// min:120ミリ秒 max:360ミリ秒
 // super vision timeout 4000ミリ秒
 // slave latency 0
 
-#define DEFAULT_MIN_CONN_INTERVAL_MILLISEC      (60)
+#define DEFAULT_MIN_CONN_INTERVAL_MILLISEC      (100)
 #define DEFAULT_MAX_CONN_INTERVAL_MILLISEC      (240)
 #define DEFAULT_SLAVE_LATENCY                   0
 #define DEFAULT_CONN_SUP_TIMEOUT_MILISEC        (4 * 1000)
