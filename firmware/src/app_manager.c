@@ -21,6 +21,8 @@ APP_TIMER_DEF(m_timer_id);
 static SensorThreshold _threshold;
 static int _high_pin_count;
 static int _low_pin_count;
+// fstorageが使うバッファ。書き込みが完了するまで、バッファは保持しなければならない。ワードアライメント。
+static uint32_t _buffer[1 + (sizeof(SensorThreshold) + 1) / sizeof(uint32_t)];
 
 // main.cで宣言しているコンテキストを参照する。
 extern sensor_service_t sensor_service_context;
@@ -38,7 +40,7 @@ FS_REGISTER_CFG(fs_config_t fs_config) =
     .priority  = 0xFE            // Priority for flash usage.
 };
 
-#define MAGIC_WORD 0xab
+#define MAGIC_WORD 0x0ab
 
 /*
  * Private methods
@@ -107,15 +109,16 @@ void initAppManager(void)
     ret_code_t err_code;
     
     // 変数の初期化。
-    _threshold.highThreshold = 30; // 2G   / 64mg/digit = 30
-    _threshold.lowThreshold  = 20; // 1.3G / 64mg/digit = 20
+    _threshold.highThreshold = 2000;
+    _threshold.lowThreshold  = 1500;
     _high_pin_count = 0;
     _low_pin_count  = 0;
     
     // フラッシュのアドレスを取得。先頭がマジックワードであれば、設定値として読み出す。
-    uint8_t *buffer = (uint8_t *)fs_config.p_start_addr;
-    if(buffer[0] == MAGIC_WORD) {
-        memcpy(&_threshold, &buffer[1], sizeof(_threshold));
+    uint32_t *ptr = (uint32_t *)fs_config.p_start_addr;
+    if(ptr[0] == MAGIC_WORD) {
+        memcpy(&_threshold, (uint8_t *)&ptr[1], sizeof(_threshold));
+        NRF_LOG_PRINTF_DEBUG("recovering threshold value: h:%d, l:%d.\n", _threshold.highThreshold, _threshold.lowThreshold);
     }
     
     // IO初期化。
@@ -156,20 +159,23 @@ void setSensorThreshold(const SensorThreshold *p_threshold)
     _threshold = *p_threshold;
 
     // バッファに展開。先頭はマジックワード。
-    const int buffer_length = 1 + sizeof(_threshold);
-    uint8_t buffer[buffer_length];
-    buffer[0] = MAGIC_WORD;
-    memcpy(&buffer[1], (uint8_t *)&_threshold, sizeof(_threshold));
+    memset(_buffer, 0, sizeof(_buffer));
+    _buffer[0] = MAGIC_WORD;
+    memcpy((uint8_t *)&_buffer[1], (uint8_t *)&_threshold, sizeof(_threshold));
     
     // デバイス名の永続化。fstorageのページを消去、後に保存。
     fs_ret_t ret;
     ret = fs_erase(&fs_config, fs_config.p_start_addr, 1, NULL);
     APP_ERROR_CHECK(ret); // FS_SUCCESSは0。APP_ERROR_CHECKで代用する。
-    ret = fs_store(&fs_config, fs_config.p_start_addr, (uint32_t *)buffer, sizeof(buffer) / sizeof(uint32_t) + 1, NULL);
+    ret = fs_store(&fs_config, fs_config.p_start_addr, _buffer, sizeof(_buffer), NULL);
     APP_ERROR_CHECK(ret); // FS_SUCCESSは0。APP_ERROR_CHECKで代用する。
+    
+    NRF_LOG_PRINTF_DEBUG("setSensorThreshold(), h:%d l:%d.\n", _threshold.highThreshold, _threshold.lowThreshold);
 }
 
 void getSensorThreshold(SensorThreshold *p_threshold)
 {
     *p_threshold = _threshold;
+    
+    NRF_LOG_PRINTF_DEBUG("getSensorThreshold(), h:%d l:%d.\n",  _threshold.highThreshold, _threshold.lowThreshold);
 }

@@ -208,23 +208,18 @@ void getAccelerationData(AccelerationData_t *p_acceleration)
     readFromLIS3DH(OUT_Z_L, &lsb, 1);
     p_acceleration->z = readAs10bitValue(msb, lsb);
 
-
     // これだと読めない。
 //    uint8_t buf[2];
 //    readFromLIS3DH(OUT_X_L, buf, 2);
 //    p_acceleration->x = readAs10bitValue(buf[1], buf[0]);
-    
-//    readFromLIS3DH(OUT_Y_H, &data, 1);
-//    p_acceleration->y = data;
-//    readFromLIS3DH(OUT_Z_H, &data, 1);
-//    p_acceleration->z = data;
 
-#ifdef DEBUG
-    static int count = 0;
-    count++;
-    if(count > 25) {
-        NRF_LOG_PRINTF_DEBUG("%d, %d, %d.\n", p_acceleration->x, p_acceleration->y, p_acceleration->z);
-        count = 0;
-    }
-#endif
+//#ifdef DEBUG
+//    static int count = 0;
+//    count++;
+//    if(count > 25) {
+////        NRF_LOG_PRINTF_DEBUG("%d, %d, %d.\n", p_acceleration->x, p_acceleration->y, p_acceleration->z);
+//        NRF_LOG_PRINTF_DEBUG("%d, 0x%02x, 0x%02x.\n", p_acceleration->x, msb, lsb);
+//        count = 0;
+//    }
+//#endif
 }

@@ -149,16 +149,16 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
     // MARK: - protocol SensorSerivceDelegate: class
     func didUpdate(_ sender: SensorSerivce, data: SensorData)
     {
-        dataArray[2].append(Double(data.Acceleration))
-        dataArray[0].append(Double(data.HighThresholdOutput))
-        dataArray[1].append(Double(data.LowThresholdOutput))
+        dataArray[0].append(Double(data.Acceleration))
         if dataArray[0].count > 100 {
             dataArray[0].remove(at: 0)
-            dataArray[1].remove(at: 0)
-            dataArray[2].remove(at: 0)
+//            dataArray[1].remove(at: 0)
+//            dataArray[2].remove(at: 0)
         }
         self.dataCell?.graphView?.plotData(dataArray)
-        
+
+        switchArray[1].append(Double(data.HighThresholdOutput) * 2)
+        switchArray[0].append(Double(data.LowThresholdOutput))
         if switchArray[0].count > 100 {
             switchArray[0].remove(at: 0)
             switchArray[1].remove(at: 0)
@@ -173,15 +173,15 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
         switch ((indexPath as NSIndexPath).row) {
         case 0:
             self.dataCell = (cell as? SensorDataCellView)!
-            self.dataCell?.graphView?.shouldPlot = [true, true, true]
-            self.dataCell?.graphView?.maxValue   = 32000
+            self.dataCell?.graphView?.shouldPlot = [true, false, false]
+            self.dataCell?.graphView?.maxValue   = 4000
             self.dataCell?.graphView?.minValue   = 0
 
         case 1:
             self.switchCell = (cell as? SensorDataCellView)!
             self.switchCell?.graphView?.shouldPlot = [true, true, false]
-            self.switchCell?.graphView?.maxValue   = 1.5
-            self.switchCell?.graphView?.minValue   = 0
+            self.switchCell?.graphView?.maxValue   =  2.5
+            self.switchCell?.graphView?.minValue   = -0.2
 
         default: break
         }
