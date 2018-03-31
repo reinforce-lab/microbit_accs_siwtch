@@ -28,7 +28,6 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
     var switchCell: SensorDataCellView?
     var switchArray:[[Double]] = [[], []]
     
-    
 //    var statusCell:             SensorStatusCellView?
 //    var accelerationDataModel:  AccelerationDataModel?
 //    var gyroDataModel:          GyroDataModel?
@@ -146,7 +145,14 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
         _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
-    // MARK: - protocol SensorSerivceDelegate: class
+    // MARK: - SensorSerivceDelegate
+    func didThresholdUpdate(_ sender: SensorSerivce, highThreshold: Int, lowThreshold: Int)
+    {
+        self.highSlider.value = Float(highThreshold)
+        self.lowSlider.value  = Float(lowThreshold)
+        updateThreshold()
+    }
+    
     func didUpdate(_ sender: SensorSerivce, data: SensorData)
     {
         dataArray[0].append(Double(data.Acceleration))
@@ -174,7 +180,7 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
         case 0:
             self.dataCell = (cell as? SensorDataCellView)!
             self.dataCell?.graphView?.shouldPlot = [true, false, false]
-            self.dataCell?.graphView?.maxValue   = 4000
+            self.dataCell?.graphView?.maxValue   = 8000
             self.dataCell?.graphView?.minValue   = 0
 
         case 1:
@@ -182,6 +188,7 @@ class SensorDataViewController : UITableViewController, DeviceDelegate, UISplitV
             self.switchCell?.graphView?.shouldPlot = [true, true, false]
             self.switchCell?.graphView?.maxValue   =  2.5
             self.switchCell?.graphView?.minValue   = -0.2
+            device?.sensorService?.readThreshold()
 
         default: break
         }

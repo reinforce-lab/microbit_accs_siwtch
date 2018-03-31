@@ -55,23 +55,25 @@ static void fs_evt_handler(fs_evt_t const * const evt, fs_ret_t result)
     }
 }
 
-static void set_io_value(bool compare_result, uint32_t pin_number, int *p_count)
+static int set_io_value(bool compare_result, uint32_t pin_number, int count)
 {
     // 比較した結果がtrueなら、閾値を超えている。カウント値を初期値にする。falseなら、1減算する。
     if(compare_result) {
-        *p_count = COUNT_VALUE;
+        count = COUNT_VALUE;
     } else {
-        if(p_count > 0) {
-            *p_count -= 1;
+        if(count > 0) {
+            count -= 1;
         }
     }
 
     // カウント値が0であればLOWに落とす。
-    if( p_count == 0 ) {
+    if( count == 0 ) {
         nrf_gpio_pin_clear(pin_number);
     } else {
         nrf_gpio_pin_set(pin_number);
     }
+    
+    return count;
 }
 
 static void _timer_handler(void *p_arg)
@@ -85,10 +87,10 @@ static void _timer_handler(void *p_arg)
 
     // 閾値を越えているか?
     bool high_compare_result = (mag > (_threshold.highThreshold * _threshold.highThreshold));
-    set_io_value(high_compare_result, PIN_HIGH_THRESHOLD, &_high_pin_count);
+    _high_pin_count = set_io_value(high_compare_result, PIN_HIGH_THRESHOLD, _high_pin_count);
     
     bool low_compare_result = (mag > (_threshold.lowThreshold * _threshold.lowThreshold));
-    set_io_value(low_compare_result, PIN_LOW_THRESHOLD, &_low_pin_count);
+    _low_pin_count = set_io_value(low_compare_result, PIN_LOW_THRESHOLD, &_low_pin_count);
 
     // BLEで通知する。
     uint8_t buff[8];

@@ -5,6 +5,7 @@ import CoreBluetooth
 protocol SensorSerivceDelegate: class
 {
     func didUpdate(_ sender: SensorSerivce, data: SensorData)
+    func didThresholdUpdate(_ sender: SensorSerivce, highThreshold: Int, lowThreshold: Int)
 }
 
 struct SensorData
@@ -21,6 +22,9 @@ open class SensorSerivce : DeviceService
     // Variables
     unowned let device: Device
 
+    var thresholdData: [UInt8]?
+    var isWriting: Bool = false
+    
     let service: CBService
     let dataChar: CBCharacteristic
     let thresholdChar: CBCharacteristic
@@ -38,7 +42,7 @@ open class SensorSerivce : DeviceService
         self.thresholdChar = _thresholdChar
         
         self.device.setNotify(self.dataChar, enabled: true)
-//        self.device.readValue(self.thresholdChar)
+        self.readThreshold()
     }
 
     // 値更新通知
@@ -58,11 +62,25 @@ open class SensorSerivce : DeviceService
             DispatchQueue.main.async {
                 self.delegate?.didUpdate(self, data: data)
             }
-//            case DeviceUUIDs.SensorThresholdCharUUID:
+
+        case DeviceUUIDs.SensorThresholdCharUUID:
+            guard data.count == 5 else { return }
+            // 5バイト。リトルエンディアン、16ビット整数で、high閾値、low閾値。最後の1バイトはチェックサム。
+            let highThreshold = Int(Int16.unpack(data[0..<2])!)
+            let lowThreshold  = Int(Int16.unpack(data[2..<4])!)
+            DispatchQueue.main.async {
+                self.delegate?.didThresholdUpdate(self, highThreshold: highThreshold, lowThreshold: lowThreshold)
+            }
+            
         default:
             debugPrint("\(#function): unexpected character: \(characteristic).")
             break
         }
+    }
+
+    func readThreshold()
+    {
+        self.device.readValue(self.thresholdChar)
     }
     
     func updateThreshold(highThreshold:Int, lowThreshold:Int)
@@ -77,6 +95,15 @@ open class SensorSerivce : DeviceService
         
         assert(b.count == 5)
         
-        self.device.writeValue(self.thresholdChar, value: b)
+        // 0.1秒ごとに書き込みをまとめる。
+        self.thresholdData = b
+        if( !self.isWriting ) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                if let data = self.thresholdData {
+                    self.device.writeValue(self.thresholdChar, value: data)
+                }
+                self.isWriting = false
+            })
+        }
     }
 }
